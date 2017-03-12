@@ -12,6 +12,10 @@ let g:loaded_testing_pair = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
+if !exists("g:testing_pair_debug")
+  let g:testing_pair_debug = 0
+endif
+
 command! -nargs=0 OpenTestingPair call testingpair#OpenTestingPair()
 command! -nargs=0 ToggleTestingPair call testingpair#ToggleTestingPair()
 

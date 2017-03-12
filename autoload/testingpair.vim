@@ -12,12 +12,20 @@ function! testingpair#OpenTestingPair()
 endfunction
 
 function! testingpair#ToggleTestingPair()
+  let regexp = ''
   if s:IsTestFile(expand('%:t:r'))
     let regexp = s:MakeNormalFileRegex()
-    call s:OpenBufferRegexp(regexp)
+    if g:testing_pair_debug == 1
+      echom 'Opening normal file: ' . regexp
+    endif
   else
-    call testingpair#OpenTestingPair()
+    let regexp = s:MakeTestingPairRegex()
+    if g:testing_pair_debug == 1
+      echom 'Opening test file: ' . regexp
+    endif
   endif
+
+  call s:OpenBufferRegexp(regexp)
 endfunction
 
 function! s:OpenBufferRegexp(regexp) abort
@@ -29,7 +37,9 @@ function! s:OpenBufferRegexp(regexp) abort
       return 1
     endif
   endfor
-  echo 'buf not found: ' . s:regexp
+  if g:testing_pair_debug == 1
+    echom 'Buffer not found: ' . s:regexp
+  endif
   return 0
 endfunction
 
