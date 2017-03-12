@@ -2,20 +2,21 @@
 "
 " The plugin to open testin-pair quickly.
 " Toggle the buffers of production code and testing code.
+" https://github.com/grohiro/vim-testing-pair
 
-command! OpenTestingPair :call OpenTestingPair()
-command! ToggleTestingPair :call ToggleTestingPair()
+let s:save_cpo = &cpo
+set cpo&vim
 
-function! OpenTestingPair()
+function! testingpair#OpenTestingPair()
   call s:OpenBufferRegexp(s:MakeTestingPairRegex())
 endfunction
 
-function! ToggleTestingPair()
+function! testingpair#ToggleTestingPair()
   if s:IsTestFile(expand('%:t:r'))
     let regexp = s:MakeNormalFileRegex()
     call s:OpenBufferRegexp(regexp)
   else
-    call OpenTestingPair()
+    call testingpair#OpenTestingPair()
   endif
 endfunction
 
@@ -44,3 +45,5 @@ function! s:IsTestFile(fname)
   return a:fname =~ '_\?test$'
 endfunction
 
+let &cpo = s:save_cpo
+unlet s:save_cpo
