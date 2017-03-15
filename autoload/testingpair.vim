@@ -30,7 +30,11 @@ endfunction
 
 function! s:OpenBufferRegexp(regexp) abort
   let s:regexp = '' . a:regexp
+  let curbuf = bufnr('%')
   for bufinfo in getbufinfo()
+    if bufinfo.bufnr == curbuf
+      :continue
+    endif
     let basename = fnamemodify(bufinfo.name, ':t:r')
     if basename =~ s:regexp
       execute 'buf '.bufinfo.bufnr
@@ -48,7 +52,7 @@ function! s:MakeTestingPairRegex()
 endfunction
 
 function! s:MakeNormalFileRegex()
-  return substitute(expand('%:t:r'), '\c_\?test$', '', 'g')
+  return '\c'.substitute(expand('%:t:r'), '\c_\?test$', '', 'g')
 endfunction
 
 function! s:IsTestFile(fname)
